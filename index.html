@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Does the Internet Know About Us? — Alpha World School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Libre+Franklin:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --kg:#1D9E75;--kg-light:#E1F5EE;--kg-50:#F0FAF6;--kg-dark:#085041;
+  --ka:#BA7517;--ka-light:#FAEEDA;--ka-50:#FDF6E9;--ka-dark:#633806;
+  --ink:#1A1A18;--ink-soft:#2C2C2A;--muted:#6E6D67;--muted-light:#A8A79F;
+  --paper:#FBFAF5;--warm:#F5F2E8;--rule:#D9D6C9;--rule-soft:#E8E5D7;
+  --dark:#1C1C1A;--dark-card:#252523;--dark-border:#3A3A36;
+}
+
+html{scroll-behavior:smooth}
+body{font-family:'Libre Franklin',sans-serif;color:var(--ink);background:var(--dark);-webkit-font-smoothing:antialiased}
+
+/* ===== NAV ===== */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(28,28,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--dark-border);display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:52px}
+.topnav-left{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted-light)}
+.topnav-left strong{color:var(--kg);font-weight:500}
+.topnav-links{display:flex;gap:6px}
+.topnav-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted-light);text-decoration:none;padding:6px 12px;border-radius:4px;transition:all 0.15s}
+.topnav-links a:hover{color:var(--paper);background:var(--dark-border)}
+.topnav-links a.active{color:var(--kg);background:rgba(29,158,117,0.12)}
+
+/* ===== LAYOUT ===== */
+.sidebar{position:fixed;top:52px;left:0;width:220px;height:calc(100vh - 52px);background:var(--dark);border-right:1px solid var(--dark-border);padding:24px 0;overflow-y:auto;z-index:50}
+.sb-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);padding:0 20px;margin-bottom:12px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12px;color:var(--muted-light);text-decoration:none;transition:all 0.12s;border-left:2px solid transparent}
+.sb-item:hover{color:var(--paper);background:rgba(255,255,255,0.03)}
+.sb-item.active{color:var(--kg);border-left-color:var(--kg);background:rgba(29,158,117,0.06)}
+.sb-item.t2p{color:var(--ka)}
+.sb-item.t2p:hover{color:#d4941f}
+.sb-num{font-family:'DM Mono',monospace;font-size:10px;width:22px;flex-shrink:0;opacity:0.6}
+.sb-title{font-weight:500;line-height:1.3}
+.sb-badge{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.08em;text-transform:uppercase;padding:2px 5px;border-radius:3px;background:var(--kg);color:white;margin-left:auto;flex-shrink:0}
+.sb-badge.soon{background:var(--dark-border);color:var(--muted)}
+
+.main{margin-left:220px;margin-top:52px;min-height:calc(100vh - 52px)}
+
+/* ===== HERO ===== */
+.hero{background:linear-gradient(170deg,#0F2E24 0%,var(--dark) 50%,#1A1509 100%);padding:80px 60px 64px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(29,158,117,0.08) 0%,transparent 70%);pointer-events:none}
+
+.focus-badge{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--kg);padding:6px 14px;border:1px solid rgba(29,158,117,0.3);border-radius:100px;margin-bottom:24px;background:rgba(29,158,117,0.06)}
+.focus-dot{width:6px;height:6px;border-radius:50%;background:var(--kg)}
+
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(36px,5vw,56px);line-height:0.95;color:var(--paper);font-weight:400;letter-spacing:-0.02em;margin-bottom:20px;max-width:700px}
+.hero h1 em{font-style:italic;color:var(--kg)}
+
+.hero-dek{font-family:'DM Serif Display',serif;font-style:italic;font-size:17px;line-height:1.5;color:var(--muted-light);max-width:600px;margin-bottom:32px}
+
+.hero-meta{display:flex;gap:0;border:1px solid var(--dark-border);border-radius:6px;overflow:hidden;max-width:680px;background:rgba(37,37,35,0.6)}
+.hero-meta-item{flex:1;padding:14px 18px;border-right:1px solid var(--dark-border)}
+.hero-meta-item:last-child{border-right:none}
+.hero-meta-key{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.hero-meta-val{font-size:14px;font-weight:500;color:var(--paper)}
+
+/* ===== CONTENT SECTIONS ===== */
+.section{padding:48px 60px;border-bottom:1px solid var(--dark-border)}
+.section:last-child{border-bottom:none}
+
+.section-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--kg);margin-bottom:12px}
+
+.section h2{font-family:'DM Serif Display',serif;font-size:28px;color:var(--paper);font-weight:400;margin-bottom:16px;letter-spacing:-0.01em}
+
+.section p,.section li{font-size:14px;line-height:1.7;color:var(--muted-light);max-width:640px}
+.section p+p{margin-top:12px}
+
+.section strong{color:var(--paper);font-weight:500}
+
+.section em.highlight{font-style:normal;color:var(--kg);font-weight:500}
+
+.pullquote{font-family:'DM Serif Display',serif;font-style:italic;font-size:20px;line-height:1.4;color:var(--paper);padding:24px 0 24px 24px;border-left:3px solid var(--kg);margin:24px 0;max-width:600px}
+
+/* ===== PILLARS ===== */
+.pillars{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:24px 0}
+.pillar{background:var(--dark-card);border:1px solid var(--dark-border);border-radius:6px;padding:16px;transition:border-color 0.15s}
+.pillar:hover{border-color:var(--kg)}
+.pillar-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--kg);margin-bottom:8px;letter-spacing:0.08em}
+.pillar-title{font-size:13px;font-weight:600;color:var(--paper);margin-bottom:6px;line-height:1.3}
+.pillar-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* ===== TRANSFORMATION ===== */
+.transform-card{background:linear-gradient(135deg,rgba(29,158,117,0.08) 0%,rgba(29,158,117,0.02) 100%);border:1px solid rgba(29,158,117,0.2);border-radius:8px;padding:32px;margin:8px 0}
+.transform-card p{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;line-height:1.55;color:var(--paper);max-width:600px}
+.transform-card p strong{color:var(--kg);font-weight:400}
+
+/* ===== ARC ===== */
+.arc-phases{display:grid;grid-template-columns:2fr 4fr 3fr;gap:0;border:1px solid var(--dark-border);border-radius:6px;overflow:hidden;margin:20px 0 12px}
+.arc-phase{padding:14px 16px;border-right:1px solid var(--dark-border);background:var(--dark-card)}
+.arc-phase:last-child{border-right:none}
+.arc-phase-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:3px}
+.arc-phase-name{font-family:'DM Serif Display',serif;font-size:14px;color:var(--paper);font-style:italic}
+
+.week-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:6px}
+.week-card{background:var(--dark-card);border:1px solid var(--dark-border);border-radius:6px;padding:12px 10px;min-height:90px;display:flex;flex-direction:column;justify-content:space-between;transition:all 0.15s;text-decoration:none}
+.week-card:hover{border-color:var(--muted)}
+.week-card.active{background:rgba(29,158,117,0.08);border-color:var(--kg)}
+.week-card.t2p{border-color:rgba(186,117,23,0.3);background:rgba(186,117,23,0.04)}
+.week-card-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:6px}
+.week-card.active .week-card-num{color:var(--kg)}
+.week-card.t2p .week-card-num{color:var(--ka)}
+.week-card-title{font-size:11px;font-weight:500;color:var(--muted-light);line-height:1.35}
+.week-card.active .week-card-title{color:var(--kg)}
+.week-card.t2p .week-card-title{color:var(--ka)}
+.week-card-pillar{font-family:'DM Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-top:8px}
+
+/* ===== TEST TO PASS ===== */
+.t2p-section{background:var(--dark-card);border:1.5px solid var(--ka);border-radius:8px;overflow:hidden;margin:8px 0}
+.t2p-top{background:var(--ka);padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
+.t2p-top-title{font-family:'DM Serif Display',serif;font-size:22px;color:white}
+.t2p-top-title em{font-style:italic}
+.t2p-top-badge{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.8)}
+.t2p-body{padding:24px}
+.t2p-intro{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;line-height:1.6;color:var(--ka-light);margin-bottom:20px;max-width:600px}
+.t2p-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.t2p-crit{background:var(--dark);border:1px solid var(--dark-border);border-radius:6px;padding:16px}
+.t2p-crit-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--ka);letter-spacing:0.1em;margin-bottom:8px}
+.t2p-crit-title{font-size:14px;font-weight:600;color:var(--paper);margin-bottom:8px;line-height:1.3}
+.t2p-crit-desc{font-size:12px;color:var(--muted-light);line-height:1.55;margin-bottom:10px}
+.t2p-crit-measure{padding-top:10px;border-top:1px dashed var(--dark-border)}
+.t2p-crit-measure-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--ka);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px}
+.t2p-crit-measure-text{font-size:11px;color:var(--muted-light);line-height:1.5}
+.t2p-threshold{background:var(--dark);border:1px solid var(--ka);border-radius:6px;padding:16px}
+.t2p-threshold p{font-size:13px;color:var(--ka-light);line-height:1.6}
+.t2p-threshold strong{color:var(--paper);font-weight:600}
+
+/* ===== AI ===== */
+.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.ai-card{background:var(--dark-card);border:1px solid var(--dark-border);border-radius:6px;padding:16px;transition:border-color 0.15s}
+.ai-card:hover{border-color:var(--kg)}
+.ai-card-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--kg);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px}
+.ai-card-text{font-size:12px;color:var(--muted-light);line-height:1.55}
+
+/* ===== CTA ===== */
+.cta-card{background:linear-gradient(135deg,rgba(29,158,117,0.12) 0%,rgba(29,158,117,0.04) 100%);border:1px solid rgba(29,158,117,0.3);border-radius:8px;padding:32px;display:flex;justify-content:space-between;align-items:center;gap:24px;margin:8px 0}
+.cta-text h3{font-family:'DM Serif Display',serif;font-size:20px;color:var(--paper);margin-bottom:6px}
+.cta-text p{font-size:13px;color:var(--muted-light)}
+.cta-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dark);background:var(--kg);padding:12px 24px;border-radius:6px;text-decoration:none;white-space:nowrap;transition:all 0.15s;font-weight:500}
+.cta-btn:hover{background:#23b888;transform:translateY(-1px)}
+
+/* ===== FOOTER ===== */
+.site-footer{padding:32px 60px;border-top:1px solid var(--dark-border);display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  .sidebar{display:none}
+  .main{margin-left:0}
+  .hero{padding:60px 32px 48px}
+  .section{padding:36px 32px}
+  .pillars{grid-template-columns:repeat(3,1fr)}
+  .week-grid{grid-template-columns:repeat(3,1fr)}
+  .t2p-grid{grid-template-columns:1fr}
+  .hero-meta{flex-wrap:wrap}
+  .hero-meta-item{flex:none;width:50%}
+  .site-footer{padding:24px 32px}
+}
+@media(max-width:600px){
+  .topnav{padding:0 16px}
+  .hero{padding:48px 20px 36px}
+  .section{padding:28px 20px}
+  .pillars{grid-template-columns:1fr}
+  .week-grid{grid-template-columns:1fr 1fr}
+  .ai-grid{grid-template-columns:1fr}
+  .arc-phases{grid-template-columns:1fr}
+  .cta-card{flex-direction:column;text-align:center}
+  .site-footer{padding:20px;flex-direction:column;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="topnav">
+  <div class="topnav-left"><strong>Alpha World School</strong> · Build 1</div>
+  <div class="topnav-links">
+    <a href="index.html" class="active">Workshop Overview</a>
+    <a href="day1.html">Day 1 — Kickoff</a>
+  </div>
+</nav>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="sb-label">9-Week Arc</div>
+  <a href="day1.html" class="sb-item active">
+    <span class="sb-num">W1</span>
+    <span class="sb-title">What does the internet know about you?</span>
+    <span class="sb-badge">Day 1</span>
+  </a>
+  <a href="#" class="sb-item">
+    <span class="sb-num">W2</span>
+    <span class="sb-title">What does the internet know about us?</span>
+    <span class="sb-badge soon">soon</span>
+  </a>
+  <a href="#" class="sb-item">
+    <span class="sb-num">W3</span>
+    <span class="sb-title">Who wrote what the internet knows?</span>
+    <span class="sb-badge soon">soon</span>
+  </a>
+  <a href="#" class="sb-item">
+    <span class="sb-num">W4</span>
+    <span class="sb-title">What tools do we have?</span>
+    <span class="sb-badge soon">soon</span>
+  </a>
+  <a href="#" class="sb-item">
+    <span class="sb-num">W5</span>
+    <span class="sb-title">What story do we want to tell?</span>
+    <span class="sb-badge soon">soon</span>
+  </a>
+  <a href="#" class="sb-item">
+    <span class="sb-num">W6</span>
+    <span class="sb-title">What do we not want the internet to know?</span>
+    <span class="sb-badge soon">soon</span>
+  </a>
+  <a href="#" class="sb-item t2p">
+    <span class="sb-num">W7</span>
+    <span class="sb-title">How do we teach what we know?</span>
+    <span class="sb-badge soon">soon</span>
+  </a>
+  <a href="#" class="sb-item t2p">
+    <span class="sb-num">W8</span>
+    <span class="sb-title">What do we want to leave behind?</span>
+    <span class="sb-badge soon">soon</span>
+  </a>
+  <a href="#" class="sb-item t2p">
+    <span class="sb-num">W9</span>
+    <span class="sb-title">What does the internet know about us now?</span>
+    <span class="sb-badge soon">soon</span>
+  </a>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<main class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="focus-badge"><span class="focus-dot"></span> Education — Learning infrastructure & literacy</div>
+    <h1>What does the<br><em>internet</em> know<br>about us?</h1>
+    <p class="hero-dek">A 9-week Critical Thinking workshop. The Alpha cohort researches, designs, teaches, and revises a digital literacy curriculum for Legacy Girls School — until it runs without them.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-key">Cohort</div>
+        <div class="hero-meta-val">5–7 students</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-key">Duration</div>
+        <div class="hero-meta-val">9 weeks</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-key">Life skill</div>
+        <div class="hero-meta-val">Critical Thinking</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-key">Focus area</div>
+        <div class="hero-meta-val">Education</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-key">Standard</div>
+        <div class="hero-meta-val">Runs without us</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRIEF -->
+  <section class="section" id="brief">
+    <div class="section-eyebrow">The Brief</div>
+    <h2>Build it. Teach it. Prove it works. Leave it behind.</h2>
+    <p>Digital literacy was identified as a priority by Legacy Girls School leadership and the <strong>Legacy Plus team — a partner embedded in this community for over 20 years.</strong> The Alpha cohort's job is not to determine what the community needs. It's to design curriculum that delivers on a need that already exists, in a way Legacy teachers can sustain long after the cohort leaves.</p>
+    <p>On Day 1, the cohort produces the first draft of that curriculum. <strong>Draft is the operative word.</strong> What gets built in 90 minutes is a hypothesis — a starting point the cohort will pressure-test against real community input in the first weeks of the rotation before anything is taught.</p>
+    <div class="pullquote">The curriculum evolves. The standard doesn't: it runs without us.</div>
+    <p>By week 9, a Legacy girl will have authored something about her community that the internet didn't know before. By the time the Alpha cohort flies home, the curriculum that got her there can be picked up and run by a Kenyan teacher who wasn't in the room.</p>
+  </section>
+
+  <!-- DIGITAL LITERACY -->
+  <section class="section" id="digital-literacy">
+    <div class="section-eyebrow">What we're teaching</div>
+    <h2>Digital literacy — defined</h2>
+    <p><strong>Digital literacy</strong> is the ability to find, evaluate, use, and create information using digital technologies — effectively and responsibly. It's not just knowing how to use a device. It's being a capable, critical, and responsible participant in digital environments.</p>
+    <p>The curriculum covers five pillars. The 9-week arc dedicates time to each one.</p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <div class="pillar-title">Finding & evaluating</div>
+        <div class="pillar-desc">Search effectively, assess source credibility, spot misinformation and bias</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <div class="pillar-title">Using tools & platforms</div>
+        <div class="pillar-desc">Become functional with software, apps, and services relevant to your context</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <div class="pillar-title">Creating content</div>
+        <div class="pillar-desc">Produce documents, media, and communications using digital tools</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">04</div>
+        <div class="pillar-title">Safety & privacy</div>
+        <div class="pillar-desc">Protect personal data, recognize scams, manage access and privacy settings</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">05</div>
+        <div class="pillar-title">Critical thinking about tech</div>
+        <div class="pillar-desc">Understand how algorithms, feeds, and AI shape what you see and experience</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRANSFORMATION -->
+  <section class="section" id="transformation">
+    <div class="section-eyebrow">The Transformation</div>
+    <h2>What an Alpha student becomes</h2>
+    <div class="transform-card">
+      <p>The Alpha student who finishes this workshop can walk into a room, research a community they don't belong to, design curriculum for it, deliver it live, <strong>measure whether it actually taught somebody something</strong>, and revise it until it does. That's a skill most adults never acquire. They'll have it at sixteen.</p>
+    </div>
+  </section>
+
+  <!-- 9-WEEK ARC -->
+  <section class="section" id="arc">
+    <div class="section-eyebrow">The 9-Week Arc</div>
+    <h2>Inward → Outward → Upward</h2>
+    <p>Each week builds a different digital literacy pillar. The question drives the week. The pillar grounds it in real capability.</p>
+
+    <div class="arc-phases">
+      <div class="arc-phase">
+        <div class="arc-phase-label">Weeks 1–2</div>
+        <div class="arc-phase-name">Inward — whose question is this?</div>
+      </div>
+      <div class="arc-phase">
+        <div class="arc-phase-label">Weeks 3–6</div>
+        <div class="arc-phase-name">Outward — build the tools to answer it</div>
+      </div>
+      <div class="arc-phase">
+        <div class="arc-phase-label">Weeks 7–9</div>
+        <div class="arc-phase-name">Upward — teach it, prove it, leave it behind</div>
+      </div>
+    </div>
+
+    <div class="week-grid">
+      <a href="day1.html" class="week-card active">
+        <div>
+          <div class="week-card-num">W1 ← Day 1</div>
+          <div class="week-card-title">What does the internet know about you?</div>
+        </div>
+        <div class="week-card-pillar">Foundation</div>
+      </a>
+      <div class="week-card">
+        <div>
+          <div class="week-card-num">W2</div>
+          <div class="week-card-title">What does the internet know about us?</div>
+        </div>
+        <div class="week-card-pillar">Critical thinking</div>
+      </div>
+      <div class="week-card">
+        <div>
+          <div class="week-card-num">W3</div>
+          <div class="week-card-title">Who wrote what the internet knows?</div>
+        </div>
+        <div class="week-card-pillar">Finding & evaluating</div>
+      </div>
+      <div class="week-card">
+        <div>
+          <div class="week-card-num">W4</div>
+          <div class="week-card-title">What tools do we have?</div>
+        </div>
+        <div class="week-card-pillar">Using tools + creating</div>
+      </div>
+      <div class="week-card">
+        <div>
+          <div class="week-card-num">W5</div>
+          <div class="week-card-title">What story do we want to tell?</div>
+        </div>
+        <div class="week-card-pillar">Creating content</div>
+      </div>
+      <div class="week-card">
+        <div>
+          <div class="week-card-num">W6</div>
+          <div class="week-card-title">What do we not want the internet to know?</div>
+        </div>
+        <div class="week-card-pillar">Safety & privacy</div>
+      </div>
+      <div class="week-card t2p">
+        <div>
+          <div class="week-card-num">W7 · test window</div>
+          <div class="week-card-title">How do we teach what we know?</div>
+        </div>
+        <div class="week-card-pillar">Synthesis</div>
+      </div>
+      <div class="week-card t2p">
+        <div>
+          <div class="week-card-num">W8 · test window</div>
+          <div class="week-card-title">What do we want to leave behind?</div>
+        </div>
+        <div class="week-card-pillar">Synthesis</div>
+      </div>
+      <div class="week-card t2p">
+        <div>
+          <div class="week-card-num">W9 · test window</div>
+          <div class="week-card-title">What does the internet know about us now?</div>
+        </div>
+        <div class="week-card-pillar">All five pillars</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEST TO PASS -->
+  <section class="section" id="test">
+    <div class="section-eyebrow">The Standard</div>
+    <div class="t2p-section">
+      <div class="t2p-top">
+        <div class="t2p-top-title">Test to pass — <em>the curriculum runs without us</em></div>
+        <div class="t2p-top-badge">Weeks 7–9</div>
+      </div>
+      <div class="t2p-body">
+        <p class="t2p-intro">Each Alpha student must lead a live session with Legacy students, collect measurable learning data, and submit a documented revision before passing.</p>
+        <div class="t2p-grid">
+          <div class="t2p-crit">
+            <div class="t2p-crit-num">01</div>
+            <div class="t2p-crit-title">Lead a live session</div>
+            <div class="t2p-crit-desc">Facilitate the assigned lesson with actual Legacy students. Full class period. Real audience. No rehearsal.</div>
+            <div class="t2p-crit-measure">
+              <div class="t2p-crit-measure-label">Measure</div>
+              <div class="t2p-crit-measure-text">Session completed and observed by another cohort member with written feedback against a shared rubric.</div>
+            </div>
+          </div>
+          <div class="t2p-crit">
+            <div class="t2p-crit-num">02</div>
+            <div class="t2p-crit-title">Prove they learned</div>
+            <div class="t2p-crit-desc">Collect evidence learning happened — not vibes, not completion. Exit check, produced artifact, verbal assessment, before/after demo.</div>
+            <div class="t2p-crit-measure">
+              <div class="t2p-crit-measure-label">Measure</div>
+              <div class="t2p-crit-measure-text">At least 70% of Legacy students demonstrate the target skill or explain the core concept in their own words.</div>
+            </div>
+          </div>
+          <div class="t2p-crit">
+            <div class="t2p-crit-num">03</div>
+            <div class="t2p-crit-title">Revise for someone who wasn't there</div>
+            <div class="t2p-crit-desc">Submit the actual updated lesson — not "I would change X" — handoff-ready to a Kenyan teacher who wasn't in the room.</div>
+            <div class="t2p-crit-measure">
+              <div class="t2p-crit-measure-label">Measure</div>
+              <div class="t2p-crit-measure-text">Revision includes what changed, why, and evidence from the live session. Teacher-ready without an Alpha student present.</div>
+            </div>
+          </div>
+        </div>
+        <div class="t2p-threshold">
+          <p><strong>Pass threshold:</strong> All three. A student who leads but doesn't measure, or measures but doesn't revise, has not passed. The test closes when the curriculum can be run by someone who never met us.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI -->
+  <section class="section" id="ai">
+    <div class="section-eyebrow">AI Use</div>
+    <h2>The medium is the message</h2>
+    <p>The workshop models the digital literacy it teaches. Alpha students research, evaluate sources, and co-create using the same tools they'll eventually hand to Legacy students.</p>
+    <div class="ai-grid">
+      <div class="ai-card">
+        <div class="ai-card-label">Live community research</div>
+        <div class="ai-card-text">Claude + web search investigates real gaps in how the partner community appears online — during Day 1, in real time.</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-card-label">Curriculum stress-testing</div>
+        <div class="ai-card-text">AI pressure-tests lesson structure before live sessions — flagging assumptions, surfacing gaps, checking cultural fit.</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-card-label">Teaching to evaluate AI</div>
+        <div class="ai-card-text">Later weeks teach Legacy students to evaluate what they find online — including AI outputs themselves.</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-card-label">Co-authoring</div>
+        <div class="ai-card-text">Weeks 5–9, Legacy students use AI as a writing partner to put their community's knowledge online on their own terms.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="cta-card">
+      <div class="cta-text">
+        <h3>See how the workshop opens</h3>
+        <p>Day 1 is a 90-minute kickoff session. Five phases. One real artifact by minute 90.</p>
+      </div>
+      <a href="day1.html" class="cta-btn">Day 1 — The Kickoff →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <span>Spencer Slovic · Alpha World School Guide Application · 2026</span>
+    <span>Build 1 of 2 · Education Focus</span>
+  </footer>
+
+</main>
+
+</body>
+</html>
